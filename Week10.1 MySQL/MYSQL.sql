@@ -1,0 +1,4 @@
+CREATE DATABASE practice_db;
+SHOW DATABASE;
+USE practice_db;
+CREATE TABLE 
