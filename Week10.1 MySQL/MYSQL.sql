@@ -35,12 +35,24 @@ CREATE TABLE enrollments(
     FOREIGN KEY(course_id) REFERENCES courses(course_id)
 );
 
+Insert into courses (course_id,course_name,credits)
+values (101,"AI",3),
+(102,"ML",2),
+(103,"DL",3);
 
-SELECT * from archived_students;
+insert into enrollments(enrollment_id,student_id,course_id)
+values(001,1, 101),  -- John Doe enrolls in Mathematics
+       (002,2, 102),  -- Jane Smith enrolls in Science
+       (003,3, 103);  -- Alice Johnson enrolls in Computer Science
 
 INSERT INTO archived_students(student_id, first_name, last_name,
 email, enrollment_date) SELECT student_id, first_name, last_name, email, enrollment_date from university_students where enrollment_date='2025-08-14';
+USE practice_db;
 
+
+select *  from enrollments;
+select * from courses;
+INSERT INTO enrollments(student_id, course_id) SELECT student_id from university_students;
 SET SQL_SAFE_UPDATES=0;
 
 UPDATE university_students SET last_name='Sanmugam', email='karthis1@gmail.com' where student_id=2;
@@ -179,3 +191,36 @@ SELECT enrollment_date, COUNT(*) AS total_students
 FROM university_students
 GROUP BY enrollment_date
 HAVING total_students > 0;
+
+-- Join Query
+-- Left Join
+
+select * from enrollments;
+SELECT university_students.first_name, enrollments.course_id from university_students
+LEFT JOIN enrollments ON university_students.student_id=enrollments.student_id;
+
+-- 14) Join-Inner, Left, Right
+
+-- Inner Joins
+
+-- Fetch students and their associated course names
+  INSERT INTO university_students(first_name, last_name,email,enrollment_date,marks) 
+  VALUES('Subha','Karthi','subha@gmail.com','2025-09-01',97);
+  
+  SELECT * from university_students;
+   
+  SELECT * from courses;
+  SELECT university_students.first_name, university_students.last_name, courses.course_name, 
+  university_students.student_id FROM university_students 
+  INNER JOIN enrollments ON university_students.student_id=enrollments.student_id 
+  INNER JOIN courses ON enrollments.course_id=courses.course_id;
+  -- We can use INNER JOIN or LEFT JOIN both are same.
+  -- LEFT JOIN enrollments ON university_students.student_id=enrollments.student_id 
+  -- LEFT JOIN courses ON enrollments.course_id=courses.course_id;
+ 
+ 
+ -- Right Join
+ SELECT university_students.student_id, first_name
+ FROM university_students
+ RIGHT JOIN enrollments
+ ON university_students.student_id=enrollments.student_id
